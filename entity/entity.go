@@ -4,23 +4,23 @@ import "ForestModel/behaviour"
 
 //GenericInterface is a generic representational interface with function/type members
 type GenericInterface interface {
-	GetBehaviours() map[string]behaviour.Behaviour
+	GetBehaviours() map[string]*behaviour.Behaviour
+	Simulate(interface{})
 }
 
-//Entity is the reified object with GenericInterface-described members
+//Entity represents the default required contents of an entity
 type Entity struct {
-	behaviours map[string]behaviour.Behaviour
-	GenericInterface
+	Behaviours []*behaviour.Behaviour
 }
 
-//GetBehaviours returns the behaviours performed by the parent entity
-func (e *Entity) GetBehaviours() map[string]behaviour.Behaviour {
-	return e.behaviours
+//Simulate simulates a single tick of a specific entity
+func (e *Entity) Simulate(w *interface{}) {
+	for behaviour := range e.Behaviours {
+		e.Behaviours[behaviour].Action(w)
+	}
 }
 
-//Soil represents the soil entity with nutrient levels, moisture, temp, etc.
-type Soil struct {
-	Levels      map[string]float32
-	Temperature float32
-	Moisture    float32
+//Humid represents an entity that has a humidity value
+type Humid interface {
+	GetHumidity() float32
 }
