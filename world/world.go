@@ -19,6 +19,8 @@ type Cell struct {
 	Strata    []*Stratum
 	Substrate *entity.Soil
 	Contents  []entity.GenericInterface
+	WPointer  *World
+	Position  util.Point
 }
 
 //Stratum represents the properties of one of the stratified layers of biomedia within the modelled biome
@@ -41,6 +43,7 @@ func InitializeWorld(size util.Rect, cellSize int) (World, error) {
 			world.Cells[util.Point{int32(x), int32(y)}] = &Cell{
 				Substrate: entity.NewSoil(),
 				Strata:    []*Stratum{},
+				WPointer:  &world,
 			}
 		}
 	}
@@ -90,4 +93,9 @@ func (w *World) Simulate(ticks int) {
 		}
 		return _map
 	})()
+}
+
+//GetNeighbors returns the neighboring cells
+func (c *Cell) GetNeighbors() {
+	neighbors := map[util.Point]*Cell{}
 }
